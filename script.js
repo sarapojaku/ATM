@@ -39,6 +39,18 @@ function checkPin() {
   }
 }
 
+// Enable Enter key for PIN input
+document.addEventListener("DOMContentLoaded", () => {
+  const pinInput = document.getElementById("pin-input");
+  if (pinInput) {
+    pinInput.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        checkPin();
+      }
+    });
+  }
+});
+
 // --- Language selection ---
 function selectLanguage(lang) {
   language = lang;
@@ -104,8 +116,11 @@ function changePin() {
 }
 
 function exitATM() {
-  // Directly show exit screen with thank you message only
-  showScreen("exit-screen");
+  // Clear everything and ONLY show exit screen
+  document
+    .querySelectorAll(".screen")
+    .forEach((s) => s.classList.remove("active"));
+  document.getElementById("exit-screen").classList.add("active");
 }
 
 // --- Message helper ---
