@@ -3,37 +3,34 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ARASBank ATM</title>
+    <title>ARASBANK ATM</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="atm-container">
-      <h1>WELCOME TO ARASBANK</h1>
-
-      <div id="pin-section">
-        <p>Enter PIN:</p>
-        <input type="password" id="pin-input" placeholder="Enter PIN" />
-        <button onclick="verifyPin()">Submit</button>
-        <p id="pin-message"></p>
+    <div class="atm-screen">
+      <div class="atm-header">
+        <h1>ARASBANK</h1>
       </div>
-
-      <div id="menu-section" class="hidden">
-        <p>Select Language / Zgjidh Gjuhën</p>
-        <button onclick="showMenu('E')">English</button>
-        <button onclick="showMenu('S')">Shqip</button>
+      <div class="atm-body">
+        <div id="atm-container">
+          <h2>Welcome to ARASBANK</h2>
+          <div id="pin-section">
+            <p>Please enter your PIN</p>
+            <input
+              type="password"
+              id="pin-input"
+              placeholder="****"
+              maxlength="6"
+            />
+            <button onclick="verifyPin()">Enter</button>
+            <p id="pin-message"></p>
+          </div>
+        </div>
       </div>
-
-      <div id="atm-menu" class="hidden">
-        <h2 id="menu-title"></h2>
-        <button onclick="checkBalance()">Check Balance</button>
-        <button onclick="withdrawMoney()">Withdraw</button>
-        <button onclick="depositMoney()">Deposit</button>
-        <button onclick="changePin()">Change PIN</button>
-        <button onclick="exitATM()">Exit</button>
-        <p id="atm-message"></p>
+      <div class="atm-footer">
+        <p>Secure Banking System © 2025</p>
       </div>
     </div>
-
     <script src="script.js"></script>
   </body>
 </html>
