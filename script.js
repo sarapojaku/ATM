@@ -116,11 +116,9 @@ function changePin() {
 }
 
 function exitATM() {
-  // Clear everything and ONLY show exit screen
-  document
-    .querySelectorAll(".screen")
-    .forEach((s) => s.classList.remove("active"));
-  document.getElementById("exit-screen").classList.add("active");
+  // Clear the entire container and show only the exit message
+  const container = document.querySelector(".atm-container");
+  container.innerHTML = "<h2>Thank you for using ARASBANK!</h2>";
 }
 
 // --- Message helper ---
