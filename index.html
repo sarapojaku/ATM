@@ -7,30 +7,48 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="atm-screen">
-      <div class="atm-header">
-        <h1>ARASBANK</h1>
+    <div class="atm-container">
+      <h1 id="atm-title">WELCOME TO ARASBANK</h1>
+
+      <!-- PIN Screen -->
+      <div id="pin-screen" class="screen active">
+        <p>Please insert your card PIN:</p>
+        <input type="password" id="pin-input" maxlength="6" autofocus />
+        <button onclick="checkPin()">Enter</button>
+        <p id="trials-left"></p>
       </div>
-      <div class="atm-body">
-        <div id="atm-container">
-          <h2>Welcome to ARASBANK</h2>
-          <div id="pin-section">
-            <p>Please enter your PIN</p>
-            <input
-              type="password"
-              id="pin-input"
-              placeholder="****"
-              maxlength="6"
-            />
-            <button onclick="verifyPin()">Enter</button>
-            <p id="pin-message"></p>
-          </div>
+
+      <!-- Language Screen -->
+      <div id="lang-screen" class="screen">
+        <p>Select Language / Zgjidh Gjuhën</p>
+        <button onclick="selectLanguage('E')">English</button>
+        <button onclick="selectLanguage('S')">Shqip</button>
+      </div>
+
+      <!-- Main Menu -->
+      <div id="menu-screen" class="screen">
+        <h2 id="menu-title">ATM Menu</h2>
+        <div class="menu-buttons">
+          <button id="balance-btn" onclick="checkBalance()"></button>
+          <button id="withdraw-btn" onclick="withdraw()"></button>
+          <button id="deposit-btn" onclick="deposit()"></button>
+          <button id="change-pin-btn" onclick="changePin()"></button>
+          <button id="exit-btn" onclick="exitATM()"></button>
         </div>
       </div>
-      <div class="atm-footer">
-        <p>Secure Banking System © 2025</p>
+
+      <!-- Message -->
+      <div id="message-screen" class="screen">
+        <p id="message-text"></p>
+        <button onclick="goToMenu()">Back</button>
+      </div>
+
+      <!-- Exit Screen -->
+      <div id="exit-screen" class="screen">
+        <h2>Thank you for using ARASBANK!</h2>
       </div>
     </div>
+
     <script src="script.js"></script>
   </body>
 </html>
