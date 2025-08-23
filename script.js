@@ -1,7 +1,10 @@
 let TRIALS = 3;
-let UserPin = 1202;
+let UserPin = localStorage.getItem("userPin")
+  ? parseInt(localStorage.getItem("userPin"))
+  : 1202;
 let BALANCE = 12290;
 
+const pinInput = document.getElementById("pin-input");
 const pinSection = document.getElementById("pin-section");
 const menuSection = document.getElementById("menu-section");
 const atmMenu = document.getElementById("atm-menu");
@@ -9,15 +12,25 @@ const menuTitle = document.getElementById("menu-title");
 const atmMessage = document.getElementById("atm-message");
 const pinMessage = document.getElementById("pin-message");
 
+// Numeric keypad functions
+function pressKey(num) {
+  pinInput.value += num;
+}
+
+function clearPin() {
+  pinInput.value = "";
+}
+
 function verifyPin() {
-  const pinInput = document.getElementById("pin-input").value;
-  if (parseInt(pinInput) !== UserPin) {
+  const pinValue = parseInt(pinInput.value);
+  if (pinValue !== UserPin) {
     TRIALS--;
     if (TRIALS <= 0) {
       pinMessage.textContent = "No trials left. Card blocked.";
-      pinSection.querySelector("button").disabled = true;
+      disableKeypad();
     } else {
       pinMessage.textContent = `Wrong PIN. ${TRIALS} trials left.`;
+      clearPin();
     }
   } else {
     pinSection.classList.add("hidden");
@@ -25,6 +38,12 @@ function verifyPin() {
   }
 }
 
+function disableKeypad() {
+  const buttons = document.querySelectorAll("#keypad button");
+  buttons.forEach((btn) => (btn.disabled = true));
+}
+
+// Menu functions
 function showMenu(lang) {
   menuSection.classList.add("hidden");
   atmMenu.classList.remove("hidden");
@@ -58,6 +77,7 @@ function changePin() {
   } else {
     let newPin = parseInt(prompt("Enter new PIN:"));
     UserPin = newPin;
+    localStorage.setItem("userPin", newPin);
     atmMessage.textContent = `PIN changed successfully!`;
   }
 }
