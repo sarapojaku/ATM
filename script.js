@@ -1,113 +1,118 @@
-// Load PIN from localStorage or default to 1202
-let UserPin = localStorage.getItem("userPin")
-  ? parseInt(localStorage.getItem("userPin"))
-  : 1202;
+// Load or initialize data (PIN + balance)
+let data = JSON.parse(localStorage.getItem("atmData")) || {
+  pin: "1202",
+  balance: 12290,
+};
 
-// Load balance from localStorage or default
-let BALANCE = localStorage.getItem("balance")
-  ? parseInt(localStorage.getItem("balance"))
-  : 12290;
+let trials = 3;
+let language = "E";
 
-// Cache DOM elements
-const welcomeScreen = document.getElementById("welcome-screen");
-const loginScreen = document.getElementById("login-screen");
-const menuScreen = document.getElementById("menu-screen");
-const messageScreen = document.getElementById("message-screen");
-
-const pinInput = document.getElementById("pin-input");
-const loginBtn = document.getElementById("login-btn");
-const balanceBtn = document.getElementById("check-balance");
-const withdrawBtn = document.getElementById("withdraw");
-const depositBtn = document.getElementById("deposit");
-const changePinBtn = document.getElementById("change-pin");
-const exitBtn = document.getElementById("exit");
-const messageBox = document.getElementById("message");
-const backBtn = document.getElementById("back-btn");
-
-function showScreen(screen) {
-  [welcomeScreen, loginScreen, menuScreen, messageScreen].forEach(
-    (s) => (s.style.display = "none")
-  );
-  screen.style.display = "block";
+// --- Helpers ---
+function saveData() {
+  localStorage.setItem("atmData", JSON.stringify(data));
 }
 
-// Start at login
-showScreen(loginScreen);
-
-// --- LOGIN LOGIC ---
-function login() {
-  let enteredPin = parseInt(pinInput.value);
-  if (enteredPin === UserPin) {
-    showScreen(menuScreen);
-    pinInput.value = "";
-  } else {
-    alert("Incorrect PIN. Try again.");
-    pinInput.value = "";
-  }
+function showScreen(id) {
+  document
+    .querySelectorAll(".screen")
+    .forEach((s) => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 }
 
-loginBtn.addEventListener("click", login);
-pinInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") login();
-});
-
-// --- MENU OPTIONS ---
-balanceBtn.addEventListener("click", () => {
-  messageBox.innerText = `Your Available Balance is $${BALANCE}`;
-  showScreen(messageScreen);
-});
-
-withdrawBtn.addEventListener("click", () => {
-  let amount = parseInt(prompt("Enter the amount you want to withdraw:"));
-  if (isNaN(amount) || amount <= 0) {
-    alert("Invalid amount.");
-    return;
-  }
-  if (amount > BALANCE) {
-    alert("Insufficient funds.");
-  } else {
-    BALANCE -= amount;
-    localStorage.setItem("balance", BALANCE);
-    messageBox.innerText = `You withdrew $${amount}. Current balance: $${BALANCE}`;
-    showScreen(messageScreen);
-  }
-});
-
-depositBtn.addEventListener("click", () => {
-  let amount = parseInt(prompt("Enter the amount you want to deposit:"));
-  if (isNaN(amount) || amount <= 0) {
-    alert("Invalid amount.");
-    return;
-  }
-  BALANCE += amount;
-  localStorage.setItem("balance", BALANCE);
-  messageBox.innerText = `You deposited $${amount}. Current balance: $${BALANCE}`;
-  showScreen(messageScreen);
-});
-
-changePinBtn.addEventListener("click", () => {
-  let currentPin = parseInt(prompt("Enter your current PIN:"));
-  if (currentPin === UserPin) {
-    let newPin = parseInt(prompt("Enter your new PIN:"));
-    if (!isNaN(newPin) && newPin.toString().length >= 4) {
-      UserPin = newPin;
-      localStorage.setItem("userPin", newPin); // SAVE new pin
-      alert("Your PIN has been changed successfully!");
+// --- PIN Check ---
+function checkPin() {
+  const entered = document.getElementById("pin-input").value;
+  if (entered !== data.pin) {
+    trials--;
+    if (trials <= 0) {
+      alert("No trials left. Card blocked.");
+      showScreen("exit-screen");
     } else {
-      alert("Invalid PIN. Must be at least 4 digits.");
+      document.getElementById(
+        "trials-left"
+      ).textContent = `Incorrect PIN. ${trials} trials left.`;
     }
   } else {
-    alert("Incorrect current PIN.");
+    document.getElementById("pin-input").value = "";
+    document.getElementById("trials-left").textContent = "";
+    showScreen("lang-screen");
   }
-});
+}
 
-exitBtn.addEventListener("click", () => {
-  messageBox.innerText = "Thank you for using ARASBANK!";
-  showScreen(messageScreen);
-  backBtn.style.display = "none";
-});
+// --- Language selection ---
+function selectLanguage(lang) {
+  language = lang;
+  setMenuText();
+  showScreen("menu-screen");
+}
 
-// --- BACK BUTTON ---
-backBtn.addEventListener("click", () => {
-  showScreen(menuScreen);
-});
+function setMenuText() {
+  if (language === "E") {
+    document.getElementById("balance-btn").textContent = "Check Balance";
+    document.getElementById("withdraw-btn").textContent = "Withdraw";
+    document.getElementById("deposit-btn").textContent = "Deposit";
+    document.getElementById("change-pin-btn").textContent = "Change PIN";
+    document.getElementById("exit-btn").textContent = "Exit";
+  } else {
+    document.getElementById("balance-btn").textContent = "Kontrollo Gjëndjen";
+    document.getElementById("withdraw-btn").textContent = "Tërheqje";
+    document.getElementById("deposit-btn").textContent = "Depozito";
+    document.getElementById("change-pin-btn").textContent = "Ndrysho PIN-in";
+    document.getElementById("exit-btn").textContent = "Dil";
+  }
+}
+
+// --- Main Menu Actions ---
+function checkBalance() {
+  showMessage(`Your available balance is: $${data.balance}`);
+}
+
+function withdraw() {
+  const amount = parseInt(prompt("Enter amount to withdraw:"));
+  if (isNaN(amount) || amount <= 0) return;
+  if (amount > data.balance) {
+    alert("Insufficient funds");
+  } else {
+    data.balance -= amount;
+    saveData();
+    showMessage(`$${amount} withdrawn. New balance: $${data.balance}`);
+  }
+}
+
+function deposit() {
+  const amount = parseInt(prompt("Enter amount to deposit:"));
+  if (isNaN(amount) || amount <= 0) return;
+  data.balance += amount;
+  saveData();
+  showMessage(`$${amount} deposited. New balance: $${data.balance}`);
+}
+
+function changePin() {
+  const oldPin = prompt("Enter current PIN:");
+  if (oldPin !== data.pin) {
+    alert("Incorrect current PIN");
+    return;
+  }
+  const newPin = prompt("Enter new PIN:");
+  if (newPin && newPin.length >= 4) {
+    data.pin = newPin;
+    saveData();
+    showMessage(`PIN changed successfully to ${data.pin}`);
+  } else {
+    alert("PIN must be at least 4 digits");
+  }
+}
+
+function exitATM() {
+  showScreen("exit-screen");
+}
+
+// --- Message helper ---
+function showMessage(msg) {
+  document.getElementById("message-text").textContent = msg;
+  showScreen("message-screen");
+}
+
+function goToMenu() {
+  showScreen("menu-screen");
+}
