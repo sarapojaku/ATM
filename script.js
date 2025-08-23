@@ -1,8 +1,11 @@
-let TRIALS = 3;
+// Load PIN and balance from localStorage if available
 let UserPin = localStorage.getItem("userPin")
   ? parseInt(localStorage.getItem("userPin"))
   : 1202;
-let BALANCE = 12290;
+let BALANCE = localStorage.getItem("balance")
+  ? parseInt(localStorage.getItem("balance"))
+  : 12290;
+let TRIALS = 3;
 
 const pinInput = document.getElementById("pin-input");
 const pinSection = document.getElementById("pin-section");
@@ -12,6 +15,12 @@ const menuTitle = document.getElementById("menu-title");
 const atmMessage = document.getElementById("atm-message");
 const pinMessage = document.getElementById("pin-message");
 
+// Save balance to localStorage whenever it changes
+function saveBalance() {
+  localStorage.setItem("balance", BALANCE);
+}
+
+// PIN verification function
 function verifyPin() {
   const pinValue = parseInt(pinInput.value);
   if (pinValue !== UserPin) {
@@ -29,6 +38,7 @@ function verifyPin() {
   }
 }
 
+// Menu functions
 function showMenu(lang) {
   menuSection.classList.add("hidden");
   atmMenu.classList.remove("hidden");
@@ -45,6 +55,7 @@ function withdrawMoney() {
     atmMessage.textContent = "Insufficient funds!";
   } else {
     BALANCE -= amount;
+    saveBalance();
     atmMessage.textContent = `$${amount} withdrawn. New balance: $${BALANCE}`;
   }
 }
@@ -52,6 +63,7 @@ function withdrawMoney() {
 function depositMoney() {
   let amount = parseInt(prompt("Enter amount to deposit:"));
   BALANCE += amount;
+  saveBalance();
   atmMessage.textContent = `$${amount} deposited. New balance: $${BALANCE}`;
 }
 
@@ -67,13 +79,13 @@ function changePin() {
   }
 }
 
+// Exit function
 function exitATM() {
-  // Clear the entire container and show only the exit message
   const container = document.querySelector(".atm-container");
   container.innerHTML = "<h2>Thank you for using ARASBANK!</h2>";
 }
 
-// Trigger verifyPin() when pressing Enter in the PIN input
+// Allow pressing Enter to verify PIN
 pinInput.addEventListener("keyup", function (event) {
   if (event.key === "Enter") {
     verifyPin();
