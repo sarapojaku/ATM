@@ -68,7 +68,9 @@ function changePin() {
 }
 
 function exitATM() {
-  atmMenu.innerHTML = "<h2>Thank you for using ARASBANK!</h2>";
+  // Clear the entire container and show only the exit message
+  const container = document.querySelector(".atm-container");
+  container.innerHTML = "<h2>Thank you for using ARASBANK!</h2>";
 }
 
 // Trigger verifyPin() when pressing Enter in the PIN input
