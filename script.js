@@ -70,3 +70,10 @@ function changePin() {
 function exitATM() {
   atmMenu.innerHTML = "<h2>Thank you for using ARASBANK!</h2>";
 }
+
+// Trigger verifyPin() when pressing Enter in the PIN input
+pinInput.addEventListener("keyup", function (event) {
+  if (event.key === "Enter") {
+    verifyPin();
+  }
+});
