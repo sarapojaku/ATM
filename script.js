@@ -97,13 +97,14 @@ function changePin() {
   if (newPin && newPin.length >= 4) {
     data.pin = newPin;
     saveData();
-    showMessage(`PIN changed successfully to ${data.pin}`);
+    showMessage(`PIN changed successfully.`);
   } else {
     alert("PIN must be at least 4 digits");
   }
 }
 
 function exitATM() {
+  // Directly show exit screen with thank you message only
   showScreen("exit-screen");
 }
 
