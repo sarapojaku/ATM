@@ -1,39 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ARASBank ATM</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <div class="atm-container">
-        <h1>WELCOME TO ARASBANK</h1>
+      <h1>WELCOME TO ARASBANK</h1>
 
-        <div id="pin-section">
-            <label>Enter PIN:</label>
-            <input type="password" id="pin-input">
-            <button onclick="verifyPin()">Submit</button>
-            <p id="pin-message"></p>
+      <div id="pin-section">
+        <p>Enter PIN:</p>
+        <input type="password" id="pin-input" readonly />
+        <div id="keypad">
+          <!-- Numeric keypad buttons -->
+          <button onclick="pressKey(1)">1</button>
+          <button onclick="pressKey(2)">2</button>
+          <button onclick="pressKey(3)">3</button>
+          <button onclick="pressKey(4)">4</button>
+          <button onclick="pressKey(5)">5</button>
+          <button onclick="pressKey(6)">6</button>
+          <button onclick="pressKey(7)">7</button>
+          <button onclick="pressKey(8)">8</button>
+          <button onclick="pressKey(9)">9</button>
+          <button onclick="clearPin()">C</button>
+          <button onclick="pressKey(0)">0</button>
+          <button onclick="verifyPin()">OK</button>
         </div>
+        <p id="pin-message"></p>
+      </div>
 
-        <div id="menu-section" class="hidden">
-            <label>Select Language:</label>
-            <button onclick="showMenu('E')">English</button>
-            <button onclick="showMenu('S')">Shqip</button>
-        </div>
+      <div id="menu-section" class="hidden">
+        <p>Select Language / Zgjidh Gjuhën</p>
+        <button onclick="showMenu('E')">English</button>
+        <button onclick="showMenu('S')">Shqip</button>
+      </div>
 
-        <div id="atm-menu" class="hidden">
-            <h2 id="menu-title"></h2>
-            <button onclick="checkBalance()">Check Balance</button>
-            <button onclick="withdrawMoney()">Withdraw</button>
-            <button onclick="depositMoney()">Deposit</button>
-            <button onclick="changePin()">Change PIN</button>
-            <button onclick="exitATM()">Exit</button>
-            <p id="atm-message"></p>
-        </div>
+      <div id="atm-menu" class="hidden">
+        <h2 id="menu-title"></h2>
+        <button onclick="checkBalance()">Check Balance</button>
+        <button onclick="withdrawMoney()">Withdraw</button>
+        <button onclick="depositMoney()">Deposit</button>
+        <button onclick="changePin()">Change PIN</button>
+        <button onclick="exitATM()">Exit</button>
+        <p id="atm-message"></p>
+      </div>
     </div>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
