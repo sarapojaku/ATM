@@ -4,7 +4,7 @@ from tkinter import messagebox, simpledialog
 # Backend data
 TRIALS = 3
 UserPin = 1202
-BALANCE = 12290
+BALANCE = 100000
 
 # Global state
 current_balance = BALANCE
