@@ -1,7 +1,7 @@
 // Load or initialize data (PIN + balance)
 let data = JSON.parse(localStorage.getItem("atmData")) || {
   pin: "1202",
-  balance: 12290,
+  balance: 100000,
 };
 
 let trials = 3;
