@@ -20,14 +20,14 @@ License
 
 ✨ Features
 
-✅ PIN verification (3 attempts)
-✅ English and Albanian (Shqip) language support
-✅ Check account balance
-✅ Withdraw money with balance validation
-✅ Deposit money
-✅ Change account PIN
-✅ Exit screen with thank-you message
-✅ Data stored locally (browser localStorage — no backend required)
+- PIN verification (3 attempts)
+- English and Albanian (Shqip) language support
+- Check account balance
+- Withdraw money with balance validation
+- Deposit money
+- Change account PIN
+- Exit screen with thank-you message
+- Data stored locally (browser localStorage — no backend required)
 
 ⚙️ Installation
 
